@@ -1,0 +1,45 @@
+name: Tests
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [16.x, 18.x, 20.x]
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+
+    - name: Install backend dependencies
+      run: cd booking-saas/backend && npm install
+
+    - name: Run backend tests
+      run: cd booking-saas/backend && npm test
+      
+    - name: Run linter
+      run: cd booking-saas/backend && npm run lint || true
+
+    - name: Install frontend dependencies
+      run: cd booking-saas/frontend && npm install
+
+    - name: Build frontend
+      run: cd booking-saas/frontend && npm run build
+
+    - name: Install admin dependencies
+      run: cd booking-saas/admin-dashboard && npm install
+
+    - name: Build admin dashboard
+      run: cd booking-saas/admin-dashboard && npm run build
