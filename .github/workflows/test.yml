@@ -21,10 +21,9 @@ jobs:
       uses: actions/setup-node@v4
       with:
         node-version: ${{ matrix.node-version }}
-        cache: 'npm'
 
     - name: Install backend dependencies
-      run: cd booking-saas/backend && npm install
+      run: cd booking-saas/backend && npm install --no-package-lock
 
     - name: Run backend tests
       run: cd booking-saas/backend && npm test
@@ -33,13 +32,13 @@ jobs:
       run: cd booking-saas/backend && npm run lint || true
 
     - name: Install frontend dependencies
-      run: cd booking-saas/frontend && npm install
+      run: cd booking-saas/frontend && npm install --no-package-lock
 
     - name: Build frontend
       run: cd booking-saas/frontend && npm run build
 
     - name: Install admin dependencies
-      run: cd booking-saas/admin-dashboard && npm install
+      run: cd booking-saas/admin-dashboard && npm install --no-package-lock
 
     - name: Build admin dashboard
       run: cd booking-saas/admin-dashboard && npm run build
